@@ -2,7 +2,7 @@ module.exports = {
   git: {
     commitMessage: 'Release ${version}',
     tagName: 'v${version}',
-    requireCommits: true,
+    // requireCommits: true,
     requireCleanWorkingDir: false,
   },
   github: {
