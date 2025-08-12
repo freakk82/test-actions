@@ -38,7 +38,7 @@ jobs:
       run: |
         git config user.name "Freakk"
         git config user.email "ffr3akk@gmail.com"
-        git config --global url.https://${{ secrets.GITHUB_TOKEN }}@github.com .insteadOf https://github.com
+        git config --global url.https://${{ secrets.RELEASE_GITHUB_TOKEN }}@github.com .insteadOf https://github.com
 
     - name: Install dependencies
       run: yarn install --frozen-lockfile
@@ -48,6 +48,6 @@ jobs:
 
     - name: Generate release
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
       run: yarn run release --increment ${{ github.event.inputs.VERSION_BUMP }} -V
       
