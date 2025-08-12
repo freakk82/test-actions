@@ -1,0 +1,50 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      VERSION_BUMP:
+        description: 'Version bump'
+        type: choice
+        options:
+        - major
+        - minor
+        - patch
+        - --preRelease=next
+        default: minor
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu
+    concurrency: 1
+    environment: release
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+
+    - name: Setup Node.js version
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
+
+    - name: Enable yarn
+      run: corepack enable
+
+    - name: Configure git
+      run: |
+        git config user.name "Freakk"
+        git config user.email "ffr3akk@gmail.com"
+        git conig --global url.https://${{ secrets.RELEASE_GITHUB_TOKEN }}@github.com .insteadof https://github.com
+
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: Generate release
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
+      run: yarn run release --increment ${{ github.event.inputs.VERSION_BUMP }}
+      
