@@ -11,9 +11,7 @@ module.exports = {
     releaseName: 'v${version}'
   },
   hooks: {
-    'after:bump': `
-    yarn build
-    `
+    'after:bump': 'yarn build'
   },
   npm: {
     publish: false
